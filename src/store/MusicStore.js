@@ -35,7 +35,6 @@ export const useMusicStore = defineStore("musicStore", {
       this.loading = false;
     },
     async getRecentlyPlayed() {
-      console.log("called");
       const id = localStorage.getItem('uid');
       console.log(id);
       const res = await axios.get(this.root_uri+"/recent/" + id);
@@ -142,55 +141,8 @@ export const useMusicStore = defineStore("musicStore", {
           },
         });
         this.userEmotion = res.data.result[0].dominant_emotion;
-        if (this.userEmotion == "disgust") {
-          this.recommendedPlayList = this.musics.filter(
-            (music) =>
-              music.Type == "alonevibe" ||
-              music.Type == "happy" ||
-              music.PlayList == "drug"
-          );
-          this.recommendedPlayList = this.recommendedPlayList.slice(0, 20);
-        } else if (this.userEmotion == "fear") {
-          this.recommendedPlayList = this.musics.filter(
-            (music) =>
-              music.PlayList == "melody" || music.PlayList == "yuvandrug"
-          );
-          this.recommendedPlayList = this.recommendedPlayList.slice(0, 20);
-        } else if (this.userEmotion == "angry") {
-          this.recommendedPlayList = this.musics.filter(
-            (music) => music.Type == "happy" || music.Artist == "G. V. Prakash"
-          );
-          this.recommendedPlayList = this.recommendedPlayList.slice(0, 20);
-        } else if (this.userEmotion == "happy") {
-          this.recommendedPlayList = this.musics.filter(
-            (music) => music.Type == "happy" || music.Type == "vibe"
-          );
-          this.recommendedPlayList = this.recommendedPlayList.slice(0, 20);
-        } else if (this.userEmotion == "neutral") {
-          this.recommendedPlayList = this.musics.filter(
-            (music) =>
-              music.PlayList == "lovedrug" ||
-              music.Type == "vibe" ||
-              music.PlayList == "happyvibe	"
-          );
-          this.recommendedPlayList = this.recommendedPlayList.slice(0, 20);
-        } else if (this.userEmotion == "sad") {
-          this.recommendedPlayList = this.musics.filter(
-            (music) =>
-              music.PlayList == "lovedrug" ||
-              music.Type == "drug" ||
-              music.PlayList == "breakup	"
-          );
-          this.recommendedPlayList = this.recommendedPlayList.slice(0, 20);
-        } else {
-          this.recommendedPlayList = this.musics.filter(
-            (music) =>
-              music.PlayList == "lovevibe" ||
-              music.Type == "happy" ||
-              music.PlayList == "goosbums	"
-          );
-          this.recommendedPlayList = this.recommendedPlayList.slice(0, 20);
-        }
+        const data = await axios.get(this.root_uri+"/musics/results/"+this.userEmotion);
+        this.recommendedPlayList = data.data;
         this.playList = this.recommendedPlayList;
         this.createDll(this.playList);
       } catch (err) {
@@ -279,8 +231,8 @@ export const useMusicStore = defineStore("musicStore", {
           userId: this.userId,
           MusicId: this.newRecentlyPlayed,
         });
-      }catch(er){
-        console.log(er);
+      }catch(err){
+        console.log("err");
       }
     },
     async setTime(t) {
