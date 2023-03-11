@@ -3,7 +3,8 @@ import { defineStore } from "pinia";
 import { createDLL } from "@/store/DoublyLikedList";
 export const useMusicStore = defineStore("musicStore", {
   state: () => ({
-    root_uri : "http://localhost:5000",
+    // root_uri: "https://musicappserver-1-x3219821.deta.app",
+    root_uri: "http://localhost:5000",
     userId: false,
     loading: true,
     pause: false,
@@ -13,9 +14,10 @@ export const useMusicStore = defineStore("musicStore", {
     currentSongData: false,
     musicTrack: false,
     musicTiming: 0,
+    showRecentlyPlayed : false,
     recentlyPlayed: [],
-    newRecentlyPlayed : [],
-    recentlyPlayedList : false,
+    newRecentlyPlayed: [],
+    recentlyPlayedList: false,
     dllist: false,
     likedSongs: [],
     songUrl: false,
@@ -35,34 +37,35 @@ export const useMusicStore = defineStore("musicStore", {
       this.loading = false;
     },
     async getRecentlyPlayed() {
-      const id = localStorage.getItem('uid');
-      console.log(id);
-      const res = await axios.get(this.root_uri+"/recent/" + id);
-      this.recentlyPlayedList =  res.data[0].MusicId;
-      this.setRP();
+      const id = localStorage.getItem("uid");
+      const res = await axios.get(this.root_uri + "/recent/" + id);
+      if(res.data.length){
+        this.showRecentlyPlayed = true;
+        this.recentlyPlayedList = res.data[0].MusicId;
+        this.setRP();
+      }
+      
     },
-    async setRP(){
-      this.createDll(this.recentlyPlayedList)
+    async setRP() {
+      this.createDll(this.recentlyPlayedList);
       this.newRecentlyPlayed = this.recentlyPlayedList;
-      console.log(this.recentlyPlayedList,"Recently played");
     },
-    async getPlayList(t,v){
-      const res = await axios.get(this.root_uri+'/musics/'+t+'/'+v);
-      console.log(res.data);
+    async getPlayList(t, v) {
+      const res = await axios.get(this.root_uri + "/musics/" + t + "/" + v);
       return res.data;
     },
     async getUserPlayList() {
-      const res = await axios.get(this.root_uri+"/playlist/"+this.userId);
+      const res = await axios.get(this.root_uri + "/playlist/" + this.userId);
       this.playList = res.data;
       this.playListCount = res.data.length;
     },
-    async getSample(){
-      const data =  await axios.get(this.root_uri+'/musics/');
-      console.log(data);
+    async getSample() {
+      const data = await axios.get(this.root_uri + "/musics/");
+
       return data.data;
     },
-    async getSearchResults(query){
-      const data = await axios.get(this.root_uri+'/musics/search/'+query)
+    async getSearchResults(query) {
+      const data = await axios.get(this.root_uri + "/musics/search/" + query);
       const res = data.data;
       return res;
     },
@@ -74,15 +77,13 @@ export const useMusicStore = defineStore("musicStore", {
         const myArray = songUrl.split(" ");
         this.songUrl = myArray.join("");
         this.musicTrack = new Audio(
-          require("@/assets/musics/" + this.songUrl + ".mp3")
+          this.currentSong.MusicURL
         );
       }
     },
     async setFav() {
       try {
-        const res = await axios.get(
-          this.root_uri+"/likes/" + this.userId
-        );
+        const res = await axios.get(this.root_uri + "/likes/" + this.userId);
         this.likedSongs = res.data[0].MusicId;
         const ll = this.likedSongs.map((item) => item);
         this.likedSongs = ll;
@@ -101,24 +102,20 @@ export const useMusicStore = defineStore("musicStore", {
           }
         }
       });
-      // this.likedSongsPlayList = this.playList.filter((music) =>
-      //   this.likedSongs.includes(music._id)
-      // );
     },
     async updateLikedList() {
       try {
-        await axios.post(this.root_uri+"/likes/update", {
+        await axios.post(this.root_uri + "/likes/update", {
           UserId: this.userId,
           MusicId: this.likedSongs,
         });
-        console.log(this.likedSongs);
       } catch (err) {
         console.log(err);
       }
     },
     async createUserPlayList() {
       this.newPlayListName = "PlayList " + (this.playListCount + 1);
-      const res = await axios.post(this.root_uri+"/playlist/add", {
+      const res = await axios.post(this.root_uri + "/playlist/add", {
         UserId: this.userId,
         PlayListName: this.newPlayListName,
       });
@@ -141,7 +138,9 @@ export const useMusicStore = defineStore("musicStore", {
           },
         });
         this.userEmotion = res.data.result[0].dominant_emotion;
-        const data = await axios.get(this.root_uri+"/musics/results/"+this.userEmotion);
+        const data = await axios.get(
+          this.root_uri + "/musics/results/" + this.userEmotion
+        );
         this.recommendedPlayList = data.data;
         this.playList = this.recommendedPlayList;
         this.createDll(this.playList);
@@ -151,7 +150,7 @@ export const useMusicStore = defineStore("musicStore", {
     },
     async saveUserPlayList() {
       try {
-        await axios.post(this.root_uri+"/playlist/update", {
+        await axios.post(this.root_uri + "/playlist/update", {
           UserId: this.userId,
           PlayListName: this.newPlayListName,
           nePlayList: this.newPlayList,
@@ -182,15 +181,17 @@ export const useMusicStore = defineStore("musicStore", {
     async setMusicTrack() {
       try {
         this.currentSongData = this.dllist.getAt(this.currentSong);
-        console.log(this.currentSongData);
         let songUrl = this.currentSongData.Title;
         const myArray = songUrl.split(" ");
         this.songUrl = myArray.join("");
         // this.musicTrack = new Audio(
         //   require("@/assets/musics/" + this.songUrl + ".mp3")
         // );
+        // this.musicTrack = new Audio(
+        //   require("@/assets/musics/" + this.songUrl + ".mp3")
+        // );
         this.musicTrack = new Audio(
-          require("@/assets/musics/" + this.songUrl + ".mp3")
+          this.currentSongData.MusicURL
         );
         this.musicTrack.play();
         this.musicTiming = 0;
@@ -198,7 +199,6 @@ export const useMusicStore = defineStore("musicStore", {
           this.musicTiming = this.musicTrack.currentTime;
         };
         this.updateRecentlyPlayed();
-        console.log(this.musicTrack);
         this.musicTrack.onended = () => {
           console.log("Ended", this.currentSong, "sdsd");
           this.currentSongData = this.dllist.nextSong(this.currentSong);
@@ -206,19 +206,17 @@ export const useMusicStore = defineStore("musicStore", {
           this.currentSong = this.dllist.getIndex(this.currentSongData);
           this.setMusicTrack();
         };
-        
+
         this.pause = true;
       } catch (err) {
         this.pause = false;
         console.log(err.message);
       }
     },
-    async updateRecentlyPlayed(){
-      if (this.newRecentlyPlayed.includes(this.currentSongData)) {
-        this.newRecentlyPlayed = this.newRecentlyPlayed.filter(
-          (ob) => ob !== this.currentSongData
-        );
-      }
+    async updateRecentlyPlayed() {
+      this.newRecentlyPlayed = this.newRecentlyPlayed.filter(
+        (ob) => ob._id !== this.currentSongData._id
+      );
       if (this.newRecentlyPlayed.length > 12) {
         this.newRecentlyPlayed = this.newRecentlyPlayed.slice(0, -1);
       }
@@ -226,12 +224,12 @@ export const useMusicStore = defineStore("musicStore", {
         this.currentSongData,
         ...this.newRecentlyPlayed,
       ];
-      try{
-        await axios.post(this.root_uri+"/recent/update", {
+      try {
+        await axios.post(this.root_uri + "/recent/update", {
           userId: this.userId,
           MusicId: this.newRecentlyPlayed,
         });
-      }catch(err){
+      } catch (err) {
         console.log("err");
       }
     },

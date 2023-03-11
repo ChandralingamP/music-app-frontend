@@ -3,7 +3,7 @@
     <div class="lg:hidden flex justify-between h-10 bg-gray-800 w-full">
       <fa @click="toggle" class="h-6 w-6 p-2 text-aliceblue" icon="bars" />
       <p class="px-4 self-center text-lg" v-if="musicStore.userName">
-        {{ musicStore.userName }} Charlie
+        {{ musicStore.userName }}
       </p>
       <p class="self-center " v-if="!musicStore.userName">
         <RouterLink class="text-white pl-8 mb-2 flex rounded-md" v-if="musicStore.isLoggedIn == false" to="/login">
@@ -86,8 +86,8 @@ export default {
   },
   setup() {
     const musicStore = useMusicStore()
-    const { createUserPlayList, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist } = storeToRefs(musicStore);
-    return { createUserPlayList, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist }
+    const { createUserPlayList,showRecentlyPlayed, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist } = storeToRefs(musicStore);
+    return { createUserPlayList,showRecentlyPlayed, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist }
   }
 }
 </script>

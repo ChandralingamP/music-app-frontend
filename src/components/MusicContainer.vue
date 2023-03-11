@@ -1,8 +1,37 @@
+
+<style>
+.news-ticker {
+  height: 30px;
+  width: 100%;
+  overflow: hidden;
+}
+@keyframes ticker {
+  0% {
+    transform: translateX(0%);
+  }
+  100%{
+    transform:  translateX(-100%);
+  }
+}
+.news-ticker p {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+  animation: ticker 12s linear infinite;
+}
+
+</style>
+
+
+
+
+
 <template>
     <div class="relateive h-16 pt-2 rounded-lg w-full hover:bg-gray-600 flex justify-between">
         <!-- {{ music }} -->
-        <div class="absolute w-full h-12  flex items-start  opacity-0 hover:opacity-100">
-            <div @click="playSong(music)" class="bg-green-500 rounded-full mt-2 ml-4 h-8 w-8 flex items-center justify-center">
+        <div @click="playSong(music)" class="absolute w-full h-12  flex items-start  opacity-0 hover:opacity-100">
+            <div  class="bg-green-500 rounded-full mt-2 ml-4 h-8 w-8 flex items-center justify-center">
                 <fa class="text-white" icon="play" />
             </div>
         </div>
@@ -10,10 +39,13 @@
             <img class="h-12 w-12 mx-2" :src="require(`@/assets/images/${music.imgPath}`)" alt="">
             <div>
                 <p class="text-gray-100">{{ music.Title }}</p>
-                <p class="text-gray-300">{{ music.Artist }}</p>
+                <p class="hidden lg:block text-gray-300">{{ music.Artist }}</p>
+                <div class="news-ticker lg:hidden">
+                    <p class="text-gray-300">{{ music.Artist }}</p>
+                </div>
             </div>
         </div>
-        <div class="h-12 py-auto lg:w-24 w-8 flex justify-around lg:mr-10 mr-4">
+        <div class="h-12 z-0 py-auto lg:w-24 w-8 flex justify-around lg:mr-10 mr-4">
             <div class=" flex items-center mr-2 justify-center">
                 <div @click="addLike(music)" v-if="music.Fav == false">
                     <fa class="hover:text-white text-black self-center" icon="heart" />

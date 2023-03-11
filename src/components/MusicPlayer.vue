@@ -1,11 +1,39 @@
+
+<style>
+.news-ticker {
+  height: 30px;
+  width: 100%;
+  overflow: hidden;
+}
+@keyframes ticker {
+  0% {
+    transform: translateX(0%);
+  }
+  100%{
+    transform:  translateX(-100%);
+  }
+}
+.news-ticker p {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+  animation: ticker 12s linear infinite;
+}
+
+</style>
+
 <template>
     <div v-if="musicStore.dllist"
-        class="w-full z-40 lg:h-20 flex lg:flex-row flex-col items-center justify-between bg-gray-800">
+        class="w-full z-20 lg:h-20 flex lg:flex-row flex-col items-center justify-between bg-gray-800">
         <div
             class="flex w-full border-b lg:border-none border-b-slate-600 px-5 py-3 lg:w-1/3 pl-10 justify-between overflow-hidden items-center">
             <div>
                 <h1 class="lg:mb-1 text-md text-white tracking-wide">{{ musicStore.currentSongData.Title }}</h1>
-                <h1 class="text-sm text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</h1>
+                <p class="hidden lg:block text-sm text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</p>
+                <div class="news-ticker lg:hidden ">
+                    <p class="text-sm text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</p>
+                </div>
             </div>
             <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav" class="ml-5 text-base text-green-300"
                 icon="heart" />

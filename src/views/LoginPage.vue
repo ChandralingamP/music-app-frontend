@@ -21,9 +21,10 @@
 
 <script setup>
 import { ref } from 'vue';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { useMusicStore } from '@/store/MusicStore'
 import { useRouter } from 'vue-router';
+import { addUser } from '@/service/User'
 import axios from 'axios';
 const email = ref();
 const password = ref('');
@@ -33,16 +34,31 @@ const login = () => {
     const auth = getAuth()
     signInWithEmailAndPassword(auth, email.value, password.value).then(async (data) => {
         MusicStore.userId = data.user.uid;
-        localStorage.setItem('uid',data.user.uid);
+        localStorage.setItem('uid', data.user.uid);
         MusicStore.setFav();
         MusicStore.getUserPlayList();
         router.push('/');
-        const res = await axios.get(MusicStore.root_uri+'/users/'+data.user.uid)
+        const res = await axios.get(MusicStore.root_uri + '/users/' + data.user.uid)
         MusicStore.userName = await res.data.userName;
         MusicStore.setDetails();
     }).catch((err) => {
         alert(err.message);
     })
+}
+const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(getAuth(), provider).then(async(data) => {
+        await addUser(data.user.uid, data.user.displayName);
+        localStorage.setItem('uid', data.user.uid);
+        MusicStore.setFav();
+        MusicStore.getUserPlayList();
+        router.push('/');
+        const res = await axios.get(MusicStore.root_uri + '/users/' + data.user.uid)
+        MusicStore.userName = await res.data.userName;
+        MusicStore.setDetails();
+    }).catch((Err) =>
+        console.log(Err)
+    );
 }
 
 </script>

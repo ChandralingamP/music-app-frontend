@@ -1,8 +1,8 @@
 <template>
     <div class="relativew-full mb-20 lg:mb-2 left-0 py-4 px-8 bg-home flex flex-col">
-        <div class="searchBar lg:mx-auto w-full  bg-white flex px-4 rounded-3xl py-1">
+        <div class="searchBar lg:w-[400px] lg:mx-auto w-full  bg-white flex px-4 rounded-3xl py-1">
             <fa class="h-5 py-1 w-5" icon="magnifying-glass" />
-            <input @keyup="resultQuery" v-model="searchQuery" class="ml-3 w-full text-lg outline-none" type="search"
+            <input @keyup="resultQuery"  v-model="searchQuery" class="ml-3  w-full text-lg outline-none" type="search"
                 placeholder="search">
         </div>
         <!-- Search Results -->
@@ -22,7 +22,7 @@
                     <div v-if="searchResults.length > 0" class="ml-5 w-full bg-home ">
                         <h2 class="mb-4 font-bold text-xl text-white ">Results</h2>
                         <div v-for="music in searchResults" :key="music">
-                            <MusicContainer title="Chandralingam " :music="music" />
+                            <MusicContainer title="Chandralingam" :music="music" />
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <!--End of Search Results -->
-        <h1 class="text-white pt-4 font-semibold text-3xl">Browse all</h1>
+        <h1 class="text-white pt-4 font-semibold mb-1 lg:mb-4 text-3xl">Browse all</h1>
         <div>
             <div class="grid w-full  lg:gap-3 gap-4 grid-cols-2 lg:grid-cols-5">
                 <div class="lg:h-60 h-44 overflow-hidden rounded-lg m-2 flex flex-col "
@@ -93,14 +93,13 @@ export default {
             if (this.searchQuery) {
                 this.flag = true
                 const details = await this.musicStore.getSearchResults(this.searchQuery);
-                // console.log(details);
                 if(details){
                     this.musicStore.createDll(details);
                     this.topResult = details.slice(0, 1);
                     this.searchResults = details.slice(1, 6);
                 }
             } else{
-                this.flag = false;
+                this.searchResults = this.musicStore.getSample()
             }
         }
     },

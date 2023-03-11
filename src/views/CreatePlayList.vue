@@ -74,6 +74,7 @@ onMounted(() => {
     MusicStore.createUserPlayList()
 })
 onUnmounted(()=>{
+    console.log("hii");
     if(MusicStore.newPlayList.length > 0){
         MusicStore.saveUserPlayList();
     }else{
@@ -99,11 +100,12 @@ export default {
         async getSlice() {
             this.searchResults = await this.musicStore.getSample()
         },
-        resultQuery() {
+        async resultQuery() {
             if (this.searchQuery) {
-                    this.searchResults = this.musicStore.getSearchResults(this.searchQuery);
+                const details = await this.musicStore.getSearchResults(this.searchQuery);
+                this.searchResults = details.slice(0,15);
             } else {
-                this.searchResults = this.musicStore.getSample()
+                this.searchResults = await this.musicStore.getSample()
             }
         }
     },
@@ -111,6 +113,7 @@ export default {
         this.musicStore = useMusicStore()
         this.getSlice();
     }
+
 }
 
 
