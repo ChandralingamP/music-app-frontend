@@ -2,14 +2,14 @@
     <div class="relativew-full mb-20 lg:mb-2 left-0 py-4 px-8 bg-home flex flex-col">
         <div class="searchBar lg:w-[400px] lg:mx-auto w-full  bg-white flex px-4 rounded-3xl py-1">
             <fa class="h-5 py-1 w-5" icon="magnifying-glass" />
-            <input @keyup="resultQuery"  v-model="searchQuery" class="ml-3  w-full text-lg outline-none" type="search"
-                placeholder="search">
+            <input @keyup="resultQuery" v-model="searchQuery" class="ml-3  w-full text-lg outline-none" type="search"
+                placeholder="text">
         </div>
         <!-- Search Results -->
         <div v-if="flag">
             <div v-if="topResult.length > 0">
-                <div class="h-96 ml-8 rounded-lg flex mt-4">
-                    <div  class="ml-2 text-white">
+                <div class="hidden h-96 ml-8 rounded-lg lg:flex mt-4">
+                    <div class="ml-2 text-white">
                         <h2 class="font-bold text-xl text-white">Top Result</h2>
                         <div v-for="music in topResult" :key="music" @click="playSong(music)"
                             class="h-80  mt-4 w-80 rounded-lg hover:bg-gray-800 flex flex-col">
@@ -26,9 +26,16 @@
                         </div>
                     </div>
                 </div>
+
             </div>
-            <div v-else>
-                <p>No results found</p>
+            <div v-if="searchResults.length > 0" class="lg:hidden w-full bg-home ">
+                <h2 class="mb-4 font-bold text-xl text-white ">Results</h2>
+                <div v-for="music in searchResults" :key="music">
+                    <MusicContainer title="Chandralingam" :music="music" />
+                </div>
+            </div>
+            <div class="flex justify-center" v-else>
+                <p class="text-medium mt-1 justify-center items-center">No results found</p>
             </div>
         </div>
         <!--End of Search Results -->
@@ -57,7 +64,7 @@
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
 <script>
 import { useMusicStore } from '@/store/MusicStore'
@@ -67,6 +74,7 @@ export default {
     data() {
         return {
             MusicDetails,
+            details :false,
             musicStore: useMusicStore(),
             searchResults: false,
             topResult: false,
@@ -90,16 +98,26 @@ export default {
             await this.musicStore.setMusicTrack();
         },
         async resultQuery() {
-            if (this.searchQuery) {
+            if (this.searchQuery){
                 this.flag = true
-                const details = await this.musicStore.getSearchResults(this.searchQuery);
-                if(details){
-                    this.musicStore.createDll(details);
-                    this.topResult = details.slice(0, 1);
-                    this.searchResults = details.slice(1, 6);
+                this.details = await this.musicStore.getSearchResults(this.searchQuery);
+                if(this.musicStore.likedSongs){
+                    this.details = this.details.map((d)=> {
+                        if(this.musicStore.likedSongs.includes(d._id)){
+                            d.Fav = true;
+                            return d;
+                        }else{
+                            return d;
+                        }
+                    })
                 }
-            } else{
-                this.searchResults = this.musicStore.getSample()
+                if(this.details) {
+                    this.musicStore.createDll(this.details);
+                    this.topResult = this.details.slice(0, 1);
+                    this.searchResults = this.details.slice(1, 6);
+                }
+            } else {
+                this.flag = false;
             }
         }
     },

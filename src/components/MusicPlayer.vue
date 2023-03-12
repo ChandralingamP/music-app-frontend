@@ -32,7 +32,7 @@
                 <h1 class="lg:mb-1 text-md text-white tracking-wide">{{ musicStore.currentSongData.Title }}</h1>
                 <p class="hidden lg:block text-sm text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</p>
                 <div class="news-ticker lg:hidden ">
-                    <p class="text-sm text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</p>
+                    <p class="text-sm w-300px text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</p>
                 </div>
             </div>
             <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav" class="ml-5 text-base text-green-300"
@@ -96,7 +96,6 @@ const playSong = async () => {
 const addLike = (music) => {
     if (musicStore.likedSongs.length == 0) {
         musicStore.likedSongs = [music._id];
-
     } else {
         musicStore.likedSongs = [...musicStore.likedSongs, music._id]
     }

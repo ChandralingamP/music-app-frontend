@@ -35,7 +35,7 @@ const login = () => {
     signInWithEmailAndPassword(auth, email.value, password.value).then(async (data) => {
         MusicStore.userId = data.user.uid;
         localStorage.setItem('uid', data.user.uid);
-        MusicStore.setFav();
+        MusicStore.setFav(false);
         MusicStore.getUserPlayList();
         router.push('/');
         const res = await axios.get(MusicStore.root_uri + '/users/' + data.user.uid)
@@ -50,7 +50,7 @@ const signInWithGoogle = () => {
     signInWithPopup(getAuth(), provider).then(async(data) => {
         await addUser(data.user.uid, data.user.displayName);
         localStorage.setItem('uid', data.user.uid);
-        MusicStore.setFav();
+        MusicStore.setFav(false);
         MusicStore.getUserPlayList();
         router.push('/');
         const res = await axios.get(MusicStore.root_uri + '/users/' + data.user.uid)

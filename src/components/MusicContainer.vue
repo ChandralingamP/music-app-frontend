@@ -36,10 +36,11 @@
         <div class="flex">
             <img class="h-12 w-12 mx-2" :src="require(`@/assets/images/${music.imgPath}`)" alt="">
             <div>
-                <p class="text-gray-100">{{ music.Title }}</p>
+                <p class="hidden lg:block text-gray-100"> {{music.Title}}</p>
+                <p class="lg:hidden text-gray-100"> {{cropTitle(music.Title)}}</p>
                 <p class="hidden lg:block text-gray-300">{{ music.Artist }}</p>
                 <div class="news-ticker lg:hidden">
-                    <p class="text-gray-300">{{ music.Artist }}</p>
+                    <p class=" w-300px text-gray-300">{{ music.Artist }}</p>
                 </div>
             </div>
         </div>
@@ -76,7 +77,9 @@ const calDur = (time) => {
     var res = minutes + ':' + seconds;
     return res;
 }
-
+const cropTitle = (title)=>{
+    return title.slice(0,24);
+}
 </script>
 
 

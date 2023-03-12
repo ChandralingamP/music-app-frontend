@@ -1,6 +1,6 @@
 <template>
     <div class="bg-home min-h-screen">
-        <div class="flex lg:h-72 h-52 p-6  bg-gray-500">
+        <div class="flex lg:h-72 h-42 h-52 p-6  bg-gray-500">
             <div class="lg:h-60 h-40 w-40 bg-pink-600 flex justify-center lg:w-60">
                 <fa class="text-white self-center h-20" icon="heart" />
             </div>
@@ -14,7 +14,7 @@
             <hr class="lg:mt-16 mt-4 mx-2 lg:mx-8">
         </div>
         <div class="text-white bg-home lg:px-8 px-2 pb-3">
-            <div class="h-14 mt-2 rounded-lg w-full hover:bg-gray-600 flex justify-between" v-for="music in playlist"
+            <div class="h-14 mt-2 rounded-lg w-full hover:bg-gray-600 flex justify-between" v-for="music in musicStore.musics"
                 :key="music">
                 <MusicContainer :music="music" />
             </div>
@@ -41,36 +41,35 @@ export default {
         const type = this.$route.params.type;
         const value = this.$route.params.value;
         this.setPlayList(type,value)
-        this.playlist = true;
     },
     unmounted() {
         if (this.musicStore.userId) {
             this.musicStore.updateLikedList()
-            console.log(this.musicStore.likedSongs);
         }
     },
     methods: {
         async setPlayList(type, value) {
             if (type == "type") {
                 try{
-                    this.playlist = await this.musicStore.getPlayList("type",value,"j")
+                    await this.musicStore.getPlayList("type",value,"j")
                 }catch(err){
                     console.log(err);
                 }
             } else if (type == "album") {
                 try{
-                    this.playlist = await this.musicStore.getPlayList("playlist",value,"j")
+                    await this.musicStore.getPlayList("playlist",value,"j")
                 }catch(err){
                     console.log(err);
                 }
             } else if (type == "artist") {
                 try{
-                    this.playlist = await this.musicStore.getPlayList("artist",value,"j")
+                    await this.musicStore.getPlayList("artist",value,"j")
                 }catch(err){
                     console.log(err);
                 }
             }
-            this.musicStore.createDll(this.playlist);
+            // await this.musicStore.updateFav(true);
+            // console.log(this.musicStore.playlist);
         },
     }
 }

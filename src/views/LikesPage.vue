@@ -10,13 +10,13 @@
                 <p v-if="musicStore.userName != false" class="text-lg lg:mt-4 mt-1 text-gray-200">{{ musicStore.userName }}</p>
             </div>
         </div>
-        <div class="flex flex-col w-full px-8">
+        <!-- <div class="flex flex-col w-full px-8">
             <h1 class="text-white text-lg mt-4 font-semibold">Let's find something for your playlist</h1>
             <div class="searchBar mt-3 lg:w-96 bg-gray-300 flex px-4 rounded-md py-1">
                 <fa class="h-5 bg-gray-300 py-1 w-5" icon="magnifying-glass" />
                 <input class="ml-3 text-lg bg-transparent outline-none w-full" type="search" placeholder="hello">
             </div>
-        </div>
+        </div> -->
         <div v-if="musicStore.likedSongsPlaylist" class="text-white lg:pb-20 pb-36 bg-home lg:px-8 px-4">
             <div class="h-14 mt-2 rounded-lg w-full hover:bg-gray-600 flex justify-between" v-for="music in musicStore.likedSongsPlaylist"
                 :key="music">

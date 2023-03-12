@@ -3,10 +3,10 @@ import { defineStore } from "pinia";
 import { createDLL } from "@/store/DoublyLikedList";
 export const useMusicStore = defineStore("musicStore", {
   state: () => ({
-    // root_uri: "https://musicappserver-1-x3219821.deta.app",
-    root_uri: "http://localhost:5000",
+    root_uri: "https://musicappserver-1-x3219821.deta.app",
     userId: false,
     loading: true,
+    musics: false,
     pause: false,
     userName: false,
     isLoggedIn: false,
@@ -14,14 +14,15 @@ export const useMusicStore = defineStore("musicStore", {
     currentSongData: false,
     musicTrack: false,
     musicTiming: 0,
-    showRecentlyPlayed : false,
+    showRecentlyPlayed: false,
     recentlyPlayed: [],
     newRecentlyPlayed: [],
     recentlyPlayedList: false,
     dllist: false,
-    likedSongs: [],
+    likedSongs: false,
+    likedSongsPlaylist: false,
     songUrl: false,
-    playList: [],
+    playList: false,
     playListCount: false,
     newPlayListName: false,
     newPlayListId: false,
@@ -32,27 +33,49 @@ export const useMusicStore = defineStore("musicStore", {
   }),
   actions: {
     async setDetails() {
-      this.getUserPlayList();
-      this.setFav();
+      await this.getUserPlayList();
+      await this.setFav(false);
       this.loading = false;
     },
     async getRecentlyPlayed() {
       const id = localStorage.getItem("uid");
       const res = await axios.get(this.root_uri + "/recent/" + id);
-      if(res.data.length){
+      if (res.data.length) {
         this.showRecentlyPlayed = true;
         this.recentlyPlayedList = res.data[0].MusicId;
+        
         this.setRP();
       }
-      
     },
     async setRP() {
+      if (this.likedSongs) {
+        const d = this.recentlyPlayedList.map((music) => {
+          if (this.likedSongs.includes(music._id)) {
+            music.Fav = true;
+            return music;
+          }else{
+            music.Fav = false;
+            return music
+          }
+        });
+        this.recentlyPlayed = d;
+      }else{
+        this.setFav(true)
+      }
       this.createDll(this.recentlyPlayedList);
       this.newRecentlyPlayed = this.recentlyPlayedList;
     },
+    async getLikedPlaylist() {
+      const data = await axios.get(
+        this.root_uri + "/likes/playlist/" + this.userId
+      );
+      this.likedSongsPlaylist = data.data;
+      this.createDll(this.likedSongsPlaylist);
+    },
     async getPlayList(t, v) {
       const res = await axios.get(this.root_uri + "/musics/" + t + "/" + v);
-      return res.data;
+      this.musics = res.data;
+      this.updateFav(true);
     },
     async getUserPlayList() {
       const res = await axios.get(this.root_uri + "/playlist/" + this.userId);
@@ -61,7 +84,6 @@ export const useMusicStore = defineStore("musicStore", {
     },
     async getSample() {
       const data = await axios.get(this.root_uri + "/musics/");
-
       return data.data;
     },
     async getSearchResults(query) {
@@ -76,32 +98,43 @@ export const useMusicStore = defineStore("musicStore", {
         let songUrl = this.currentSongData.Title;
         const myArray = songUrl.split(" ");
         this.songUrl = myArray.join("");
-        this.musicTrack = new Audio(
-          this.currentSong.MusicURL
-        );
+        this.musicTrack = new Audio(this.currentSong.MusicURL);
       }
     },
-    async setFav() {
+    async setFav(d) {
       try {
-        const res = await axios.get(this.root_uri + "/likes/" + this.userId);
-        this.likedSongs = res.data[0].MusicId;
-        const ll = this.likedSongs.map((item) => item);
-        this.likedSongs = ll;
-        this.updateFav();
+        const id = localStorage.getItem("uid");
+        const res = await axios.get(this.root_uri + "/likes/" + id);
+        this.likedSongs = res.data;
+        if(d){
+          this.setRP();
+          return;
+        }
+        this.updateFav(true);
       } catch (err) {
         console.log(err.message);
       }
     },
-    async updateFav() {
-      this.playList.map((music) => {
-        if (this.likedSongs.includes(music)) {
-          for (const key in music) {
-            if (Object.hasOwnProperty.call(music, key)) {
-              if (key == "Fav") music[key] = true;
-            }
+    async updateFav(fg) {
+      if (!this.likedSongs) {
+        this.setFav(false);
+      }
+      if (this.musics && this.likedSongs) {
+        const d = this.musics.map((music) => {
+          if (this.likedSongs.includes(music._id)) {
+            music.Fav = true;
+            return music;
+          }else{
+            return music
           }
-        }
-      });
+        });
+        this.musics = d;
+        console.log(this.musics);
+        this.createDll(this.musics);
+      }
+      if (!fg) {
+        this.updateLikedList();
+      }
     },
     async updateLikedList() {
       try {
@@ -142,8 +175,8 @@ export const useMusicStore = defineStore("musicStore", {
           this.root_uri + "/musics/results/" + this.userEmotion
         );
         this.recommendedPlayList = data.data;
-        this.playList = this.recommendedPlayList;
-        this.createDll(this.playList);
+        this.musics = this.recommendedPlayList;
+        this.createDll(this.musics);
       } catch (err) {
         console.log(err);
       }
@@ -181,18 +214,17 @@ export const useMusicStore = defineStore("musicStore", {
     async setMusicTrack() {
       try {
         this.currentSongData = this.dllist.getAt(this.currentSong);
-        let songUrl = this.currentSongData.Title;
-        const myArray = songUrl.split(" ");
-        this.songUrl = myArray.join("");
+        // let songUrl = this.currentSongData.Title;
+        // const myArray = songUrl.split(" ");
+        // this.songUrl = myArray.join("");
         // this.musicTrack = new Audio(
         //   require("@/assets/musics/" + this.songUrl + ".mp3")
         // );
         // this.musicTrack = new Audio(
         //   require("@/assets/musics/" + this.songUrl + ".mp3")
         // );
-        this.musicTrack = new Audio(
-          this.currentSongData.MusicURL
-        );
+        this.musicTrack = new Audio(this.currentSongData.MusicURL);
+        console.log(this.musicTrack);
         this.musicTrack.play();
         this.musicTiming = 0;
         this.musicTrack.ontimeupdate = () => {
