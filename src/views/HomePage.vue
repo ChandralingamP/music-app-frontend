@@ -1,22 +1,47 @@
+
+<style>
+.news-ticker {
+  height: 30px;
+  width: 100%;
+  overflow: hidden;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+.news-ticker p {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: inline-block;
+  animation: ticker 12s linear infinite;
+}
+</style>
+
 <template>
   <div class="relativew-full left-0 right-0 lg:p-8 p-4 mb-16 bg-home flex flex-col">
     <div class="my-3" v-if="musicStore.showRecentlyPlayed">
       <h1 class="text-2xl font-bold text-aliceblue mb-2">Recently Played</h1>
-      <div class="grid w-full gap-2 lg:grid-cols-6">
+      <div class="grid w-full gap-2 lg:grid-cols-7">
         <div class="lg:h-64 h-24 bg-artist rounded-lg" v-for="music in musicStore.recentlyPlayedList" :key="music">
           <div class="relateive lg:h-64 h-24 rounded-lg w-full hover:bg-gray-600 flex flex-col justify-between">
-            <div class="absolute lg:h-64 h-24  w-56 lg:pt-40 pt-8 pl-8  flex items-start opacity-0 hover:opacity-100">
+            <div class="absolute lg:h-64 h-24 w-56 lg:pt-40 pt-8 pl-8  flex items-start opacity-0 hover:opacity-100">
               <div @click="playSong(music)"
                 class="relative bg-green-500 rounded-full h-8 w-8 flex items-center justify-center">
                 <fa class=" text-white" icon="play" />
               </div>
             </div>
             <div class="flex flex-row pt-4 lg:flex-col">
-              <img class="lg:h-40 lg:w-40 h-16 w-16  lg:px-3 ml-3 mx-1" :src="require(`@/assets/images/${music.imgPath}`)"
+              <img class="lg:h-40 lg:w-[86%] h-16 w-16  ml-3 mx-1" :src="require(`@/assets/images/${music.imgPath}`)"
                 alt="">
               <div>
-                <p class="text-gray-100 mt-2 px-4">{{ music.Title }}</p>
-                <p class="text-gray-300 px-5">{{ music.Artist }}</p>
+                <p class="text-gray-100 mt-2 lg:px-[10px] px-4">{{ music.Title.slice(0,18) }}</p>
+                <p class="text-gray-300 lg:px-[10px] px-5">{{ music.Artist.slice(0,18) }}</p>
               </div>
             </div>
           </div>
@@ -28,7 +53,7 @@
       <div class="relative  lg:h-24 h-48  w-full rounded-lg bg-artist" v-for="music in MusicDetails.music_type"
         :key="music">
         <router-link :to="'/type/' + music.type">
-          <div class="absolute w-full selection:lg:h-24 h-48 flex  items-end p-4 opacity-0 hover:opacity-100">
+          <div class="absolute w-full selection lg:h-24 h-48 flex  items-end p-4 opacity-0 hover:opacity-100">
             <div class="bg-green-500 rounded-full self-end h-8 w-8 flex items-center justify-center">
               <fa class="text-white" icon="play" />
             </div>
