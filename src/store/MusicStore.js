@@ -176,6 +176,7 @@ export const useMusicStore = defineStore("musicStore", {
         );
         this.recommendedPlayList = data.data;
         this.musics = this.recommendedPlayList;
+        console.log(this.musics);
         this.createDll(this.musics);
       } catch (err) {
         console.log(err);
