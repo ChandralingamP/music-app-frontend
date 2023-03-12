@@ -41,7 +41,7 @@ class DoublyLinkedList {
   }
 }
 
-export const createDLL = (data) =>{ 
+export const createDLL = (data) =>{
     const list = new DoublyLinkedList();
     data.map((obj)=> {
         list.insertLast(obj);

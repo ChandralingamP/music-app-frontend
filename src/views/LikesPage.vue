@@ -17,8 +17,8 @@
                 <input class="ml-3 text-lg bg-transparent outline-none w-full" type="search" placeholder="hello">
             </div>
         </div>
-        <div class="text-white lg:pb-20 pb-36 bg-home lg:px-8 px-4">
-            <div class="h-14 mt-2 rounded-lg w-full hover:bg-gray-600 flex justify-between" v-for="music in musicStore.likedSongs"
+        <div v-if="musicStore.likedSongsPlaylist" class="text-white lg:pb-20 pb-36 bg-home lg:px-8 px-4">
+            <div class="h-14 mt-2 rounded-lg w-full hover:bg-gray-600 flex justify-between" v-for="music in musicStore.likedSongsPlaylist"
                 :key="music">
                 <MusicContainer :music="music" />
             </div>
@@ -30,5 +30,9 @@
 <script setup>
 import { useMusicStore } from '@/store/MusicStore';
 import MusicContainer from '@/components/MusicContainer.vue';
+import { onMounted} from 'vue';
 const musicStore = useMusicStore();
+onMounted(() => {
+    musicStore.getLikedPlaylist();
+})
 </script>

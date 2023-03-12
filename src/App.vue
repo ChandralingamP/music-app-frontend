@@ -41,7 +41,8 @@ onMounted(() => {
     if (user) {
       musicStore.isLoggedIn = true;
       musicStore.userId = user.uid;
-      const res = await axios.get('http://localhost:5000/users/' + user.uid)
+      const res = await axios.get("https://musicappserver-1-x3219821.deta.app/users/:"+user.uid);
+      // const res = await axios.get('http://localhost:5000/users/' + user.uid)
       musicStore.userName = res.data.userName;
     } else {
       musicStore.isLoggedIn = false;
@@ -86,8 +87,8 @@ export default {
   },
   setup() {
     const musicStore = useMusicStore()
-    const { createUserPlayList,showRecentlyPlayed, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist } = storeToRefs(musicStore);
-    return { createUserPlayList,showRecentlyPlayed, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist }
+    const { createUserPlayList,musics,showRecentlyPlayed,updateFav, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist } = storeToRefs(musicStore);
+    return { createUserPlayList,musics,showRecentlyPlayed,updateFav, getPlayList, dllist, createDll, recentlyPlayedList, recentlyPlayed, getRecentlyPlayed, musicTiming, songUrl, setTime, currentSongData, currentSong, saveUserPlayList, updateLikedList, setMusicTrack, newPlayListName, isLoggedIn, setDetails, pauseSong, userId, resumeSong, setFav, likedSongs, pasue, loading, getUserPlayList, getType, getArtist }
   }
 }
 </script>

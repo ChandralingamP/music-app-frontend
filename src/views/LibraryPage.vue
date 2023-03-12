@@ -25,16 +25,16 @@
 <template>
     <div class="bg-home py-6 lg:px-10 px-3 pb-16 lg:pb-0">
         <h1 class="text-white ml-2 font-bold text-3xl mb-5">Play List</h1>
-        <div  v-if="musicStore.likedSongs" class="flex flex-col lg:flex-row flex-wrap">
+        <div class="flex flex-col lg:flex-row flex-wrap">
             <Router-Link to="/likes">
-                <div
+                <div  v-if="musicStore.likedSongsPlaylist.length "
                     class="lg:h-72 lg:px-4 h-16 py-2 flex flex-row col-span-2 rounded-lg pl-6  text-white bg-green-400 m-2 lg:flex-col justify-center">
                     <div :for="song in musicStore.likedSongs" :key="song">
                         <fa icon="heart" class="lg:text-6xl text-4xl pt-2 lg:pt-0  mx-auto" />
                     </div>
                     <div class="flex ml-4 lg:ml-0 flex-col">
                         <h1 class="lg:mt-8  lg:text-3xl text-xl font-bold">Liked Songs</h1>
-                        <h4 class="lg:mt-5 text-md font-medium">{{ musicStore.likedSongs.length }} liked songs</h4>
+                        <h4 class="lg:mt-5 text-md font-medium">{{ musicStore.likedSongsPlaylist.length }} liked songs</h4>
                     </div>
                 </div>
             </Router-Link>
