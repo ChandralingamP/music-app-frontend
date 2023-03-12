@@ -10,7 +10,7 @@
             <div class="h-16 items-center text-white mx-0 hover:bg-gray-700 rounded-md justify-between flex bg-gray-800 m-2"
                 v-for="new1 in musicStore.newPlayList" :key="new1">
                 <div class="flex mx-3 my-1 w-full">
-                    <img class="h-12 w-12" :src="require(`@/assets/images/${new1.imgPath}`)" alt="">
+                    <img class="h-12 w-12" :src="new1.imgPath" alt="">
                     <div class="lg:ml-6 ml-2">
                         <p class="text-semibold">{{ cropTitle(new1.Title) }}</p>
                         <p class="text-gray-300">{{ new1.Artist }}</p>
@@ -36,7 +36,7 @@
                 <div class="h-16 items-center hover:bg-gray-700 mx-0 rounded-md justify-between flex bg-gray-800 m-2"
                     v-for="music in searchResults" :key="music">
                     <div class="flex mx-3 my-1 w-full">
-                        <img class="h-12 w-12" :src="require(`@/assets/images/${music.imgPath}`)" alt="">
+                        <img class="h-12 w-12" :src="music.imgPath" alt="">
                         <div class="lg:ml-6 ml-2">
                             <p class="text-semibold">{{ music.Title }}</p>
                             <p class="text-gray-300">{{ music.Artist }}</p>

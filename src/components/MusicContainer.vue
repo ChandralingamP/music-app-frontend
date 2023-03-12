@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="flex">
-            <img class="h-12 w-12 mx-2" :src="require(`@/assets/images/${music.imgPath}`)" alt="">
+            <img class="h-12 w-12 mx-2" :src="music.imgPath" alt="">
             <div>
                 <p class="hidden lg:block text-gray-100"> {{music.Title}}</p>
                 <p class="lg:hidden text-gray-100"> {{cropTitle(music.Title)}}</p>

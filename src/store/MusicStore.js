@@ -176,7 +176,15 @@ export const useMusicStore = defineStore("musicStore", {
         );
         this.recommendedPlayList = data.data;
         this.musics = this.recommendedPlayList;
-        console.log(this.musics);
+        const d = this.musics.map((d)=>{
+          if(this.likedSongs.includes(d._id)){
+            d = d.Fav = true;
+            return d;
+          }else{
+            return d;
+          }
+        })
+        this.musics = d;
         this.createDll(this.musics);
       } catch (err) {
         console.log(err);

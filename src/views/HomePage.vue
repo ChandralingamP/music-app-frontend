@@ -37,7 +37,7 @@
               </div>
             </div>
             <div class="flex flex-row pt-4 lg:flex-col">
-              <img class="lg:h-40 lg:w-[86%] h-16 w-16  ml-3 mx-1" :src="require(`@/assets/images/${music.imgPath}`)"
+              <img class="lg:h-40 lg:w-[86%] h-16 w-16  ml-3 mx-1" :src="music.imgPath"
                 alt="">
               <div>
                 <p class="text-gray-100 mt-2 lg:px-[10px] px-4">{{ music.Title.slice(0,18) }}</p>
@@ -60,7 +60,7 @@
           </div>
         </router-link>
         <div class=" flex flex-col lg:flex-row">
-          <img class="lg:h-20 h-32 lg:m-2 mb-2 m-4" :src="require(`@/assets/images/${music.imgurl}`)" />
+          <img class="lg:h-20 h-32 lg:m-2 mb-2 m-4"  :src="music.imgurl" />
           <p class="self-center lg:pl-4 text-sm lg:text-lg text-white">{{ music.type.toUpperCase() }}</p>
         </div>
       </div>
@@ -77,7 +77,7 @@
           </div>
         </router-link>
         <img class="lg:h-[70%] h-[70%]  w-[86%] lg:w-[86%] mt-4 mx-[7%] self-center"
-          :src="require(`@/assets/images/${music_artist.imgurl}`)" />
+          :src="music_artist.imgurl"/>
         <p class="flex mt-3 justify-center  px-auto text-white">{{ music_artist.artist }}</p>
       </div>
     </div>

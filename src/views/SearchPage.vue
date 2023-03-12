@@ -13,7 +13,7 @@
                         <h2 class="font-bold text-xl text-white">Top Result</h2>
                         <div v-for="music in topResult" :key="music" @click="playSong(music)"
                             class="h-80  mt-4 w-80 rounded-lg hover:bg-gray-800 flex flex-col">
-                            <img class=" self-center h-56 w-56 m-4" src="../assets/images/thumbnail.jpg" alt="">
+                            <img class=" self-center h-56 w-56 m-4" src="https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9" alt="">
                             <p class="ml-10">{{ music.Title }}</p>
                             <p class="ml-10">{{ music.Artist }}</p>
                         </div>
@@ -48,7 +48,7 @@
                     <router-link :to="'/artist/' + music_artist.artist">
                         <p class="flex mt-5 justify-center  px-auto text-white">{{ music_artist.artist.toUpperCase() }}</p>
                         <img class="h-36 rotate-45 mt-16  self-end"
-                            :src="require(`@/assets/images/${music_artist.imgurl}`)" />
+                            :src="music_artist.imgurl" />
                     </router-link>
                 </div>
                 <div class="lg:h-60 h-44 overflow-hidden rounded-lg m-2 flex flex-col"
@@ -59,7 +59,7 @@
                         <p class="flex mt-5 justify-center  px-auto text-white">{{ music_album.album.toLocaleUpperCase() }}
                         </p>
                         <img class="h-36 rotate-45 lg:mt-16 mt-10  self-end"
-                            :src="require(`@/assets/images/${music_album.imgurl}`)" />
+                            :src="music_album.imgurl" />
                     </router-link>
                 </div>
             </div>

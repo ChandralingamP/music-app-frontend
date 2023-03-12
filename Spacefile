@@ -5,3 +5,7 @@ micros:
     src: .
     engine: vue
     primary: true
+    commands:
+      - npm install
+    public_routes:
+      - "*" 
