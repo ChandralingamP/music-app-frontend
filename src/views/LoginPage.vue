@@ -60,6 +60,5 @@ const signInWithGoogle = () => {
         console.log(Err)
     );
 }
-
 </script>
 

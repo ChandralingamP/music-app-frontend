@@ -13,7 +13,7 @@
     </div>
     <div class="relative flex">
       <div :class="toggler">
-        <NavBar :isLoggedIn="isLoggedIn" @toggle="toggle" @handler="handleSignOut" />
+        <NavBar :isLoggedIn="musicStore.isLoggedIn" @toggle="toggle" @handler="handleSignOut" />
       </div>
       <div class="relative w-full lg:ml-60 mb-20">
         <div>
