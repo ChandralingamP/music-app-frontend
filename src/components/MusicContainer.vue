@@ -36,8 +36,8 @@
         <div class="flex">
             <img class="h-12 w-12 mx-2" :src="music.imgPath" alt="">
             <div>
-                <p class="hidden lg:block text-gray-100"> {{music.Title}}</p>
-                <p class="lg:hidden text-gray-100"> {{cropTitle(music.Title)}}</p>
+                <p class="hidden lg:block text-gray-100"> {{ music.Title }}</p>
+                <p class="lg:hidden text-gray-100"> {{ cropTitle(music.Title) }}</p>
                 <p class="hidden lg:block text-gray-300">{{ music.Artist }}</p>
                 <div class="news-ticker lg:hidden">
                     <p class=" w-300px text-gray-300">{{ music.Artist }}</p>
@@ -77,8 +77,8 @@ const calDur = (time) => {
     var res = minutes + ':' + seconds;
     return res;
 }
-const cropTitle = (title)=>{
-    return title.slice(0,24);
+const cropTitle = (title) => {
+    return title.slice(0, 24);
 }
 </script>
 
@@ -98,31 +98,38 @@ export default {
     },
     methods: {
         addLike(music) {
-            if (this.musicStore.likedSongs) {
-                console.log(this.musicStore.likedSongs?.includes(music._id));
-                this.musicStore.likedSongs = [...this.musicStore.likedSongs, music._id]
-                for (const key in music) {
-                    if (Object.hasOwnProperty.call(music, key)) {
-                        if (key == "Fav") music[key] = true;
+            if (this.musicStore.userId) {
+                if (this.musicStore.likedSongs) {
+                    console.log(this.musicStore.likedSongs?.includes(music._id));
+                    this.musicStore.likedSongs = [...this.musicStore.likedSongs, music._id]
+                    for (const key in music) {
+                        if (Object.hasOwnProperty.call(music, key)) {
+                            if (key == "Fav") music[key] = true;
+                        }
                     }
+                    this.musicStore.updateLikedList();
+                    this.musicStore.updateFav(true);
+                } else {
+                    this.musicStore.likedSongs = [music._id];
                 }
-                this.musicStore.updateLikedList();
-                this.musicStore.updateFav(true);
-            } else {
-                this.musicStore.likedSongs = [music._id];
+            }else{
+                alert("Login to Like the Song");
             }
         },
         removeLike(music) {
-            for (const key in music) {
-                if (Object.hasOwnProperty.call(music, key)) {
-                    if (key == "Fav") music[key] = false;
+            if (this.musicStore.userId) {
+
+                for (const key in music) {
+                    if (Object.hasOwnProperty.call(music, key)) {
+                        if (key == "Fav") music[key] = false;
+                    }
                 }
+                this.musicStore.likedSongs = this.musicStore.likedSongs.filter((obj) => obj != music._id)
+                this.musicStore.likedSongs = [...this.musicStore.likedSongs];
+                console.log(this.musicStore.likedSongs);
+                this.musicStore.updateLikedList();
+                this.musicStore.updateFav(true);
             }
-            this.musicStore.likedSongs = this.musicStore.likedSongs.filter((obj) => obj != music._id)
-            this.musicStore.likedSongs = [...this.musicStore.likedSongs];
-            console.log(this.musicStore.likedSongs);
-            this.musicStore.updateLikedList();
-            this.musicStore.updateFav(true);
         }
     }
 }

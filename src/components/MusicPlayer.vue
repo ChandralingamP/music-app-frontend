@@ -1,26 +1,28 @@
 
 <style>
 .news-ticker {
-  height: 30px;
-  width: 100%;
-  overflow: hidden;
-}
-@keyframes ticker {
-  0% {
-    transform: translateX(0%);
-  }
-  100%{
-    transform:  translateX(-100%);
-  }
-}
-.news-ticker p {
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  display: inline-block;
-  animation: ticker 12s linear infinite;
+    height: 30px;
+    width: 100%;
+    overflow: hidden;
 }
 
+@keyframes ticker {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.news-ticker p {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: inline-block;
+    animation: ticker 12s linear infinite;
+}
 </style>
 
 <template>
@@ -35,10 +37,10 @@
                     <p class="text-sm w-300px text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</p>
                 </div>
             </div>
-            <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav" class="ml-5 lg:hidden text-base text-green-300"
-                icon="heart" />
-            <fa @click="addLike(musicStore.currentSongData)" v-if="!musicStore.currentSongData.Fav" class="ml-5 lg:hidden text-base text-gray-200"
-                icon="heart" />
+            <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav"
+                class="ml-5 lg:hidden text-base text-green-300" icon="heart" />
+            <fa @click="addLike(musicStore.currentSongData)" v-if="!musicStore.currentSongData.Fav"
+                class="ml-5 lg:hidden text-base text-gray-200" icon="heart" />
         </div>
         <div class="lg:w-2/3 w-full px-5 lg:py-4 flex flex-col items-center py-2">
             <div class="flex items-center">
@@ -67,10 +69,10 @@
             </div>
         </div>
         <div class="lg:flex hidden w-1/5 pr-4 items-center flex-row justify-center">
-            <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav" class="ml-5 text-base text-green-300"
-                icon="heart" />
-            <fa @click="addLike(musicStore.currentSongData)" v-if="!musicStore.currentSongData.Fav" class="ml-5 text-base text-gray-200"
-                icon="heart" />
+            <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav"
+                class="ml-5 text-base text-green-300" icon="heart" />
+            <fa @click="addLike(musicStore.currentSongData)" v-if="!musicStore.currentSongData.Fav"
+                class="ml-5 text-base text-gray-200" icon="heart" />
         </div>
     </div>
 </template>
@@ -94,17 +96,22 @@ const playSong = async () => {
 }
 
 const addLike = (music) => {
-    if (musicStore.likedSongs.length == 0) {
-        musicStore.likedSongs = [music._id];
-    } else {
-        musicStore.likedSongs = [...musicStore.likedSongs, music._id]
-    }
-    for (const key in music) {
-        if (Object.hasOwnProperty.call(music, key)) {
-            if (key == "Fav") music[key] = true;
+    if (musicStore.userId) {
+
+        if (musicStore.likedSongs.length == 0) {
+            musicStore.likedSongs = [music._id];
+        } else {
+            musicStore.likedSongs = [...musicStore.likedSongs, music._id]
         }
+        for (const key in music) {
+            if (Object.hasOwnProperty.call(music, key)) {
+                if (key == "Fav") music[key] = true;
+            }
+        }
+        musicStore.updateFav();
+    }else{
+        alert("Login to like Songs")
     }
-    musicStore.updateFav();
 }
 const removeLike = (music) => {
     for (const key in music) {

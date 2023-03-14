@@ -40,6 +40,7 @@ export default {
         this.musicStore = useMusicStore()
         const type = this.$route.params.type;
         const value = this.$route.params.value;
+        console.log(value,type);
         this.setPlayList(type,value)
     },
     unmounted() {
@@ -51,19 +52,19 @@ export default {
         async setPlayList(type, value) {
             if (type == "type") {
                 try{
-                    await this.musicStore.getPlayList("type",value,"j")
+                    await this.musicStore.getPlayList("type",value)
                 }catch(err){
                     console.log(err);
                 }
             } else if (type == "album") {
                 try{
-                    await this.musicStore.getPlayList("playlist",value,"j")
+                    await this.musicStore.getPlayList("playlist",value)
                 }catch(err){
                     console.log(err);
                 }
             } else if (type == "artist") {
                 try{
-                    await this.musicStore.getPlayList("artist",value,"j")
+                    await this.musicStore.getPlayList("artist",value)
                 }catch(err){
                     console.log(err);
                 }

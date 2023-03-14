@@ -43,6 +43,7 @@ class DoublyLinkedList {
 
 export const createDLL = (data) =>{
     const list = new DoublyLinkedList();
+    console.log(data);
     data.map((obj)=> {
         list.insertLast(obj);
     })

@@ -52,6 +52,7 @@ onMounted(() => {
 })
 const handleSignOut = () => {
   signOut(auth).then(() => {
+    localStorage.removeItem('uid');
     router.push('/')
   })
 }

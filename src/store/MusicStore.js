@@ -33,20 +33,22 @@ export const useMusicStore = defineStore("musicStore", {
   }),
   actions: {
     async setDetails() {
-      this.userId = localStorage.getItem('uid');
+      this.userId = localStorage.getItem("uid");
       await this.getUserPlayList();
       await this.setFav(false);
       this.loading = false;
     },
     async getRecentlyPlayed() {
       const id = localStorage.getItem("uid");
-      const res = await axios.get(this.root_uri + "/recent/" + id);
-      console.log(res.data[0].MusicId);
-      if (res.data.length) {
-        this.showRecentlyPlayed = true;
-        this.recentlyPlayedList = res.data[0].MusicId;
-        console.log(res.data);
-        this.setRP();
+      if (id) {
+        const res = await axios.get(this.root_uri + "/recent/" + id);
+        console.log(res.data[0].MusicId);
+        if (res.data.length) {
+          this.showRecentlyPlayed = true;
+          this.recentlyPlayedList = res.data[0].MusicId;
+          console.log(res.data);
+          this.setRP();
+        }
       }
     },
     async setRP() {
@@ -55,32 +57,39 @@ export const useMusicStore = defineStore("musicStore", {
           if (this.likedSongs.includes(music._id)) {
             music.Fav = true;
             return music;
-          }else{
+          } else {
             music.Fav = false;
-            return music
+            return music;
           }
         });
         this.recentlyPlayed = d;
-      }else{
-        this.setFav(true)
+      } else {
+        this.setFav(true);
       }
       this.createDll(this.recentlyPlayedList);
       this.newRecentlyPlayed = this.recentlyPlayedList;
     },
     async getLikedPlaylist() {
-      const data = await axios.get(
-        this.root_uri + "/likes/playlist/" + this.userId
-      );
-      this.likedSongsPlaylist = data.data;
-      this.createDll(this.likedSongsPlaylist);
+      if (this.userId) {
+        const data = await axios.get(
+          this.root_uri + "/likes/playlist/" + this.userId
+        );
+        this.likedSongsPlaylist = data.data;
+        this.createDll(this.likedSongsPlaylist);
+      }
     },
     async getPlayList(t, v) {
       const res = await axios.get(this.root_uri + "/musics/" + t + "/" + v);
-      this.musics = res.data;
-      this.updateFav(true);
+      this.musics = await res.data;
+      console.log(this.musics);
+      if(this.userId){
+        this.updateFav(true);
+      }else{
+        this.createDll(this.musics)
+      }
     },
     async getUserPlayList() {
-      if(this.userId){
+      if (this.userId) {
         const res = await axios.get(this.root_uri + "/playlist/" + this.userId);
         this.playList = res.data;
         this.playListCount = res.data.length;
@@ -97,6 +106,7 @@ export const useMusicStore = defineStore("musicStore", {
     },
     async createDll(data) {
       this.dllist = createDLL(data);
+      console.log(this.dllist);
       if (!this.currentSongData) {
         this.currentSongData = this.dllist.getAt(0);
         let songUrl = this.currentSongData.Title;
@@ -108,13 +118,15 @@ export const useMusicStore = defineStore("musicStore", {
     async setFav(d) {
       try {
         const id = localStorage.getItem("uid");
-        const res = await axios.get(this.root_uri + "/likes/" + id);
-        this.likedSongs = res.data;
-        if(d){
-          this.setRP();
-          return;
+        if (id) {
+          const res = await axios.get(this.root_uri + "/likes/" + id);
+          this.likedSongs = res.data;
+          if (d) {
+            this.setRP();
+            return;
+          }
+          this.updateFav(true);
         }
-        this.updateFav(true);
       } catch (err) {
         console.log(err.message);
       }
@@ -128,8 +140,8 @@ export const useMusicStore = defineStore("musicStore", {
           if (this.likedSongs.includes(music._id)) {
             music.Fav = true;
             return music;
-          }else{
-            return music
+          } else {
+            return music;
           }
         });
         this.musics = d;
@@ -151,7 +163,7 @@ export const useMusicStore = defineStore("musicStore", {
       }
     },
     async createUserPlayList() {
-      if(this.playListCount){
+      if (this.playListCount) {
         this.newPlayListName = "PlayList " + (this.playListCount + 1);
         const res = await axios.post(this.root_uri + "/playlist/add", {
           UserId: this.userId,
@@ -160,15 +172,16 @@ export const useMusicStore = defineStore("musicStore", {
         this.newPlayListId = res.data._id;
         this.playList = [...this.playList, res.data];
         this.playListCount = this.playList.length;
-      }else{
-        if(this.userId){
-          const res = await axios.get(this.root_uri + "/playlist/" + this.userId);
+      } else {
+        if (this.userId) {
+          const res = await axios.get(
+            this.root_uri + "/playlist/" + this.userId
+          );
           this.playList = res.data;
           this.playListCount = res.data.length;
+          this.createUserPlayList();
         }
-        this.createUserPlayList();
       }
-      
     },
     async predictEmotion(url) {
       try {
@@ -190,14 +203,14 @@ export const useMusicStore = defineStore("musicStore", {
         );
         this.recommendedPlayList = data.data;
         this.musics = this.recommendedPlayList;
-        const d = this.musics.map((d)=>{
-          if(this.likedSongs.includes(d._id)){
+        const d = this.musics.map((d) => {
+          if (this.likedSongs.includes(d._id)) {
             d = d.Fav = true;
             return d;
-          }else{
+          } else {
             return d;
           }
-        })
+        });
         this.musics = d;
         this.createDll(this.musics);
       } catch (err) {
