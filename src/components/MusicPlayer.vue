@@ -35,9 +35,9 @@
                     <p class="text-sm w-300px text-gray-400 tracking-wide">{{ musicStore.currentSongData.Singer }}</p>
                 </div>
             </div>
-            <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav" class="ml-5 text-base text-green-300"
+            <fa @click="removeLike(musicStore.currentSongData)" v-if="musicStore.currentSongData.Fav" class="ml-5 lg:hidden text-base text-green-300"
                 icon="heart" />
-            <fa @click="addLike(musicStore.currentSongData)" v-if="!musicStore.currentSongData.Fav" class="ml-5 text-base text-gray-200"
+            <fa @click="addLike(musicStore.currentSongData)" v-if="!musicStore.currentSongData.Fav" class="ml-5 lg:hidden text-base text-gray-200"
                 icon="heart" />
         </div>
         <div class="lg:w-2/3 w-full px-5 lg:py-4 flex flex-col items-center py-2">

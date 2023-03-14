@@ -1,9 +1,9 @@
 <template >
-    <div class="relative flex bg-home">
-        <div class="w-96 mx-auto rounded-lg bg-gray-200 my-36  flex flex-col justify-center">
+    <div class="relative px-5 flex bg-home">
+        <div class="lg:w-96 w-full px-2 lg:mx-auto rounded-lg bg-gray-200 my-36  flex flex-col justify-center">
             <h1 class="text-black mt-20 text-xl mb-5 font-bold self-center">Sign In</h1>
-            <input class="w-80 m-2 py-1 px-4 self-center" required type="text" placeholder="email" v-model="email" />
-            <input class="w-80 m-2 py-1 px-4 self-center items-center" required type="password" placeholder="password"
+            <input class="lg:w-80 w-[86%] mx-4 py-1 px-4 self-center" required type="text" placeholder="email" v-model="email" />
+            <input class="lg:w-80 w-[86%] mt-3 mx-4 py-1 px-4 self-center items-center" required type="password" placeholder="password"
                 v-model="password" />
             <button
                 class="self-center m-1 rounded-lg mt-5 py-1 bg-gray-600 text-white hover:text-black font-semibold hover:bg-gray-400 w-40"

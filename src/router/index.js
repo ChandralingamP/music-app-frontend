@@ -38,9 +38,9 @@ const routes = [
         path: "/createplaylist",
         name : "CreatePlayList",
         component : CreatePlayList,
-        // meta:{
-        //     requiresAuth : true,
-        // }
+        meta:{
+            requiresAuth : true,
+        }
     },
     {
         path: "/library",

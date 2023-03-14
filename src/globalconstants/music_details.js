@@ -8,10 +8,10 @@ export const MusicDetails = {
     { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'P. Unnikrishnan' },
     { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'Harris Jayaraj' },
     { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'Karthik' },
-    { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'Yuvan Shankar Raja' },
+    { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'Yuvan' },
     { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'Udit Narayan' },
     { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'A.R. Rahaman' },
-    { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'Anirudh Ravichander' },
+    { imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9', artist: 'Anirudh' },
   ],
   music_type: [
     { type: 'melody', imgurl: 'https://filebox-1-x3824723.deta.app/api/embed/9a5a7fb5f904a5f9' },

@@ -7,7 +7,8 @@
             <p>{{ "<-" }}</p>
                     <h2 class="h-5 ml-4">Login</h2>
         </div>
-        <button @click="$emit('handler')" v-else class="pl-8 self-start"><span class="mr-4">{{ "->" }}</span>SignOut</button>
+        <button @click="$emit('handler')" v-else class="pl-8 self-start"><span class="mr-4">{{ "->"
+        }}</span>SignOut</button>
         <nav class="flex flex-col my-2 pl-8 h-12 justify-around" v-for="nav in navLinks" :key="nav.link">
             <div @click="navTo(nav.link)" class="flex cursor-pointer hover:text-white">
                 <fa class="h-5 w-5" :icon="nav.icon" />
@@ -43,6 +44,7 @@ export default {
         navTo(uri) {
             router.push(uri);
             this.$emit('toggle');
+            window.scrollTo(0, 0);
         }
 
     }

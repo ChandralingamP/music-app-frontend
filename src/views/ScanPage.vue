@@ -4,7 +4,7 @@
             <video ref="video" @canplay="initCanvas()">Stream unavailable</video>
         </div>
         <button @click="takePicture()"
-            class="lg:mt-5 mt-48 py-2  px-6 outline-none self-center bg-gray-400 text-white w-44 font-semibold text-lg rounded-lg hover:shadow-lg">capture
+            class="mt-[55%] lg:mt-[18%] py-2  px-6 outline-none self-center bg-gray-400 text-white w-44 font-semibold text-lg rounded-lg hover:shadow-lg">capture
             image</button>
         <canvas ref="canvas" style="display :none"></canvas>
     </div>
@@ -18,6 +18,9 @@
                 <MusicContainer :music="music" />
             </div>
         </div>
+    </div>
+    <div v-if="!flag && imgUrl">
+        <p>Loading</p>
     </div>
 </template>
 <script>

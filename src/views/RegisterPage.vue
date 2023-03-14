@@ -1,10 +1,10 @@
 <template >
     <div class="flex bg-home h-screen w-full">
-        <div class="w-96 mx-auto bg-gray-200 my-auto h-1/2 flex flex-col justify-center">
+        <div class="lg:w-96 w-[90%] rounded-md mx-auto bg-gray-200 mt-32 lg:my-auto h-1/2 flex flex-col justify-center">
             <h1 class="text-black text-xl mb-5 font-bold self-center">Create an Account</h1>
-            <input class="w-80 m-2 py-1 px-4 self-center" required type="text" placeholder="username" v-model="username" />
-            <input class="w-80 m-2 py-1 px-4 self-center" required type="text" placeholder="email" v-model="email" />
-            <input class="w-80 m-2 py-1 px-4 self-center" required type="password" placeholder="password"
+            <input class="lg:w-80  mx-5 w-[86%]  m-2 py-1 px-4 self-center" required type="text" placeholder="username" v-model="username" />
+            <input class="lg:w-80  mx-5 w-[86%] m-2 py-1 px-4 self-center" required type="text" placeholder="email" v-model="email" />
+            <input class="lg:w-80  mx-5 w-[86%] m-2 py-1 px-4 self-center" required type="password" placeholder="password"
                 v-model="password" />
             <button
                 class="self-center m-1 rounded-lg mt-5 py-1 bg-gray-600 text-white hover:text-black font-semibold hover:bg-gray-400 w-40"

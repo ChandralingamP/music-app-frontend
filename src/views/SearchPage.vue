@@ -26,7 +26,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div v-if="searchResults.length > 0" class="lg:hidden w-full bg-home ">
                 <h2 class="mb-4 font-bold text-xl text-white ">Results</h2>
@@ -42,23 +41,22 @@
         <h1 class="text-white pt-4 font-semibold mb-1 lg:mb-4 text-3xl">Browse all</h1>
         <div>
             <div class="grid w-full  lg:gap-3 gap-4 grid-cols-2 lg:grid-cols-5">
-                <div class="lg:h-60 h-44 overflow-hidden rounded-lg m-2 flex flex-col "
+                <div class="lg:h-64 h-44 overflow-hidden rounded-lg lg:m-2 flex flex-col 6"
                     :class="color[Math.floor(Math.random() * color.length)]"
                     v-for="music_artist in MusicDetails.music_artist" :key="music_artist.artist">
                     <router-link :to="'/artist/' + music_artist.artist">
-                        <p class="flex mt-5 justify-center  px-auto text-white">{{ music_artist.artist.toUpperCase() }}</p>
-                        <img class="h-36 rotate-45 mt-16  self-end"
+                        <p class="flex mt-2 lg:mt-5 w-full overflow-hidden justify-center  px-auto text-white">{{ music_artist.artist.toUpperCase() }}</p>
+                        <img class=" mx-[5%] mt-[4%] h-[65%] w-[90%]  self-end"
                             :src="music_artist.imgurl" />
                     </router-link>
                 </div>
-                <div class="lg:h-60 h-44 overflow-hidden rounded-lg m-2 flex flex-col"
+                <div class="lg:h-64 h-44 overflow-hidden rounded-lg lg:m-2 flex flex-col 6"
                     :class="color[Math.floor(Math.random() * color.length)]" v-for="music_album in MusicDetails.music_album"
                     :key="music_album.album">
-                    <!-- {{ music_album }} -->
                     <router-link :to="'/album/' + music_album.album">
-                        <p class="flex mt-5 justify-center  px-auto text-white">{{ music_album.album.toLocaleUpperCase() }}
+                        <p class="flex mt-2 lg:mt-5 justify-center  px-auto text-white">{{ music_album.album.toLocaleUpperCase() }}
                         </p>
-                        <img class="h-36 rotate-45 lg:mt-16 mt-10  self-end"
+                        <img class=" mx-[5%] mt-[4%] h-[65%] w-[90%]  self-end"
                             :src="music_album.imgurl" />
                     </router-link>
                 </div>

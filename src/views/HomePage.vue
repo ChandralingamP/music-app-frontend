@@ -60,7 +60,7 @@
           </div>
         </router-link>
         <div class=" flex flex-col lg:flex-row">
-          <img class="lg:h-20 h-32 lg:m-2 mb-2 m-4"  :src="music.imgurl" />
+          <img class="lg:h-20 h-36 lg:m-2 mb-2 m-4"  :src="music.imgurl" />
           <p class="self-center lg:pl-4 text-sm lg:text-lg text-white">{{ music.type.toUpperCase() }}</p>
         </div>
       </div>
@@ -76,7 +76,7 @@
             </div>
           </div>
         </router-link>
-        <img class="lg:h-[70%] h-[70%]  w-[86%] lg:w-[86%] mt-4 mx-[7%] self-center"
+        <img class="lg:h-[76%] h-[70%]  w-[86%] lg:w-[86%] mt-4 mx-[7%] self-center"
           :src="music_artist.imgurl"/>
         <p class="flex mt-3 justify-center  px-auto text-white">{{ music_artist.artist }}</p>
       </div>

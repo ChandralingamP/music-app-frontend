@@ -33,6 +33,7 @@ export const useMusicStore = defineStore("musicStore", {
   }),
   actions: {
     async setDetails() {
+      this.userId = localStorage.getItem('uid');
       await this.getUserPlayList();
       await this.setFav(false);
       this.loading = false;
@@ -40,10 +41,11 @@ export const useMusicStore = defineStore("musicStore", {
     async getRecentlyPlayed() {
       const id = localStorage.getItem("uid");
       const res = await axios.get(this.root_uri + "/recent/" + id);
+      console.log(res.data[0].MusicId);
       if (res.data.length) {
         this.showRecentlyPlayed = true;
         this.recentlyPlayedList = res.data[0].MusicId;
-        
+        console.log(res.data);
         this.setRP();
       }
     },
@@ -78,9 +80,11 @@ export const useMusicStore = defineStore("musicStore", {
       this.updateFav(true);
     },
     async getUserPlayList() {
-      const res = await axios.get(this.root_uri + "/playlist/" + this.userId);
-      this.playList = res.data;
-      this.playListCount = res.data.length;
+      if(this.userId){
+        const res = await axios.get(this.root_uri + "/playlist/" + this.userId);
+        this.playList = res.data;
+        this.playListCount = res.data.length;
+      }
     },
     async getSample() {
       const data = await axios.get(this.root_uri + "/musics/");
@@ -147,14 +151,24 @@ export const useMusicStore = defineStore("musicStore", {
       }
     },
     async createUserPlayList() {
-      this.newPlayListName = "PlayList " + (this.playListCount + 1);
-      const res = await axios.post(this.root_uri + "/playlist/add", {
-        UserId: this.userId,
-        PlayListName: this.newPlayListName,
-      });
-      this.newPlayListId = res.data._id;
-      this.playList = [...this.playList, res.data];
-      this.playListCount = this.playList.length;
+      if(this.playListCount){
+        this.newPlayListName = "PlayList " + (this.playListCount + 1);
+        const res = await axios.post(this.root_uri + "/playlist/add", {
+          UserId: this.userId,
+          PlayListName: this.newPlayListName,
+        });
+        this.newPlayListId = res.data._id;
+        this.playList = [...this.playList, res.data];
+        this.playListCount = this.playList.length;
+      }else{
+        if(this.userId){
+          const res = await axios.get(this.root_uri + "/playlist/" + this.userId);
+          this.playList = res.data;
+          this.playListCount = res.data.length;
+        }
+        this.createUserPlayList();
+      }
+      
     },
     async predictEmotion(url) {
       try {
